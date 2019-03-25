@@ -1,9 +1,21 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {shallow} from 'enzyme';
 import App from './App';
+import sinon from 'sinon';
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
+describe('Rendering the component', ()=>{
+
+  const wrapper = shallow(<App/>);
+
+  it('Renders the component without crash', () => {
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('Should simulate the button clicks', function () {
+    const buttonClick = sinon.spy();
+    const wrapper = shallow(<App onClick={buttonClick}/>);
+    wrapper.find('button').simulate('click');
+    expect(buttonClick).toHaveProperty('callCount', 0);
+  });
 });
+
